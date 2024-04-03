@@ -135,30 +135,11 @@ input1			.read the first number and store in ns1
 	JLT	input1
 	RSUB
 
-input2			.read the second number and store in ns2
-	TD	stdin
-	JEQ	input2
-	RD	stdin
-	STCH	ns2, X
-	LDT	#1
-	ADDR	T, X
-	LDT	#10
-	COMPR	T, A
-	JLT	input2
-	RSUB
-
 clns1			.clear the data in ns1
 	LDCH	space
 	STCH	ns1, X
 	TIXR	T
 	JLT	clns1
-	RSUB
-
-clns2			.clear the data in ns2
-	LDCH	space
-	STCH	ns2, X
-	TIXR	T
-	JLT	clns2
 	RSUB
 
 stn			.convert ns1 to int and store in n1
