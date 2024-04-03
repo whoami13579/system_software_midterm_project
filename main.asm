@@ -7,15 +7,15 @@ main
 
 	LDX	#0
 	LDT	#10
-	JSUB	clns1	.clear the data in ns1
+	JSUB	clns	.clear the data in ns
 
 	LDX	#0
-	JSUB	input1	.read the first number as string and store in ns1
+	JSUB	inputns	.read the first number as string and store in ns
 
 	LDT	#0
 	LDX	#0
 	LDA	#48
-	JSUB	stn	.convert ns1 to int
+	JSUB	stn	.convert ns to int
 	STT	n1	.store the value to n1
 
 	LDX	#0
@@ -24,15 +24,15 @@ main
 
 	LDX	#0
 	LDT	#10
-	JSUB	clns1	.clear the data in ns2
+	JSUB	clns	.clear the data in ns
 
 	LDX	#0
-	JSUB	input1	.read the second number and store in ns2
+	JSUB	inputns	.read the second number and store in ns
 
 	LDT	#0
 	LDX	#0
 	LDA	#48
-	JSUB	stn	.convert ns1 to int
+	JSUB	stn	.convert ns to int
 	STT	n2	.store the value to n1
 
 	JSUB	nl
@@ -42,14 +42,14 @@ main
 	JSUB	print3	.print gcd is
 
 	LDX	#0
-	JSUB	printns1
+	JSUB	printns
 
 	LDX	#0
 	LDT	#7	.the length of the string
 	JSUB	print4	.print lcm is
 
 	LDX	#0
-	JSUB	printns1
+	JSUB	printns
 
 	J	halt
 
@@ -99,55 +99,43 @@ print4			.print lcm is
 	JLT	print4
 	RSUB
 
-printns1		.print the number in ns1
+printns		.print the number in ns
 	TD	stdout
-	JEQ	printns1
-	LDCH	ns1, X
+	JEQ	printns
+	LDCH	ns, X
 	WD	stdout
 	LDT	#1
 	ADDR	T, X
 	LDT	#10
 	COMPR	T, A
-	JLT	printns1
+	JLT	printns
 	RSUB
 
-printns2		.print the number in ns2
-	TD	stdout
-	JEQ	printns2
-	LDCH	ns2, X
-	WD	stdout
-	LDT	#1
-	ADDR	T, X
-	LDT	#10
-	COMPR	T, A
-	JLT	printns2
-	RSUB
-
-input1			.read the first number and store in ns1
+inputns			.read the first number and store in ns
 	TD	stdin
-	JEQ	input1
+	JEQ	inputns
 	RD	stdin
-	STCH	ns1, X
+	STCH	ns, X
 	LDT	#1
 	ADDR	T, X
 	LDT	#10
 	COMPR	T, A
-	JLT	input1
+	JLT	inputns
 	RSUB
 
-clns1			.clear the data in ns1
+clns			.clear the data in ns
 	LDCH	space
-	STCH	ns1, X
+	STCH	ns, X
 	TIXR	T
-	JLT	clns1
+	JLT	clns
 	RSUB
 
-stn			.convert ns1 to int and store in n1
+stn			.convert ns to int and store in n1
 	SUB	#48
 	LDS	#10
 	MULR	S, T
 	ADDR	A, T
-	LDCH	ns1, X
+	LDCH	ns, X
 	LDS	#1
 	ADDR	S, X
 	COMP	#10
@@ -164,8 +152,7 @@ str3	BYTE	C'gcd is '
 str4	BYTE	C'lcm is '
 s	RESB	50
 
-ns1	RESB	10	.store the first number as string
-ns2	RESB	10	.store the second number as string
+ns	RESB	10	.store the first number as string
 
 n1	WORD	0	.store the first number
 n2	WORD	0	.store the second number
