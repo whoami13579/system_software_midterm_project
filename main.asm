@@ -35,6 +35,11 @@ main
 	JSUB	stn	.convert ns to int
 	STT	n2	.store the value to n1
 
+	JSUB	gcd
+finish
+	LDA	n1
+	STA	gcdn
+
 	JSUB	nl
 
 	LDX	#0
@@ -143,6 +148,31 @@ stn			.convert ns to int and store in n1
 	JGT	stn
 	RSUB
 
+gcd
+	LDT	n1
+	STT	tmp
+	LDA	n2
+	STA	n1
+	LDA	tmp
+	JSUB	mod
+	STA	n2
+	COMP	#0
+	JLT	gcd
+	JGT	gcd
+	J	finish
+
+mod
+	SUB	n2
+	COMP	n2
+	JGT	mod
+	JEQ	mod
+	COMP	#0
+	JLT	pn2
+	RSUB
+
+pn2			.plus n2
+	ADD	n2
+	RSUB
 
 halt	J	halt
 
@@ -158,6 +188,9 @@ n1	WORD	0	.store the first number
 n2	WORD	0	.store the second number
 n3	WORD	0
 n4	WORD	0
+gcdn	WORD	0	.gcd number
+lcmn	WORD	0	.lcm number
+tmp	WORD	0
 
 newline	BYTE	10
 space	BYTE	32
