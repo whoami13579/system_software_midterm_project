@@ -17,6 +17,7 @@ main
 	LDA	#48
 	JSUB	stn	.convert ns to int
 	STT	n1	.store the value to n1
+	STT	n3	.store the value to n1
 
 	LDX	#0
 	LDT	#25	.the length of the string
@@ -33,12 +34,18 @@ main
 	LDX	#0
 	LDA	#48
 	JSUB	stn	.convert ns to int
-	STT	n2	.store the value to n1
+	STT	n2	.store the value to n2
+	STT	n4	.store the value to n2
+
+	LDX	#0
+	LDT	#10
+	JSUB	clns
 
 	JSUB	gcd
-finish
+f1
 	LDA	n1
 	STA	gcdn
+	STA	tmp
 
 	JSUB	nl
 
@@ -47,14 +54,27 @@ finish
 	JSUB	print3	.print gcd is
 
 	LDX	#0
-	JSUB	printns
+	LDA	gcdn
+	JSUB	nts
+f2
 
+	JSUB	printns
+f3
+
+	JSUB	nl
 	LDX	#0
 	LDT	#7	.the length of the string
 	JSUB	print4	.print lcm is
 
+	JSUB	lcm
+	STA	lcmn
+
 	LDX	#0
-	JSUB	printns
+	LDA	lcmn
+	JSUB	nts2
+f4
+	JSUB	printns2
+f5
 
 	J	halt
 
@@ -104,18 +124,6 @@ print4			.print lcm is
 	JLT	print4
 	RSUB
 
-printns		.print the number in ns
-	TD	stdout
-	JEQ	printns
-	LDCH	ns, X
-	WD	stdout
-	LDT	#1
-	ADDR	T, X
-	LDT	#10
-	COMPR	T, A
-	JLT	printns
-	RSUB
-
 inputns			.read the first number and store in ns
 	TD	stdin
 	JEQ	inputns
@@ -159,7 +167,7 @@ gcd
 	COMP	#0
 	JLT	gcd
 	JGT	gcd
-	J	finish
+	J	f1
 
 mod
 	SUB	n2
@@ -172,6 +180,80 @@ mod
 
 pn2			.plus n2
 	ADD	n2
+	RSUB
+
+mod10
+	SUB	#10
+	COMP	#10
+	JGT	mod10
+	JEQ	mod10
+	COMP	#0
+	JLT	p10
+	RSUB
+
+p10			.puls 10
+	ADD	#10
+	RSUB
+
+nts			.convert number to string
+	STA	tmp
+	JSUB	mod10
+	ADD	#48
+	STCH	ns, X
+	LDT	#1
+	ADDR	T, X
+	LDA	tmp
+	DIV	#10
+	COMP	#0
+	JGT	nts
+	J	f2
+
+
+nts2			.convert number to string
+	STA	tmp
+	JSUB	mod10
+	ADD	#48
+	STCH	ns, X
+	LDT	#1
+	ADDR	T, X
+	LDA	tmp
+	DIV	#10
+	COMP	#0
+	JGT	nts2
+	J	f4
+
+printns			.print ns
+	TD	stdout
+	JEQ	printns
+	LDCH	ns, X
+	WD	stdout
+	LDT	#1
+	SUBR	T, X
+	LDT	#0
+	COMPR	T, X
+	JLT	printns
+	JEQ	printns
+	J	f3
+
+printns2			.print ns
+	TD	stdout
+	JEQ	printns
+	LDCH	ns, X
+	WD	stdout
+	LDT	#1
+	SUBR	T, X
+	LDT	#0
+	COMPR	T, X
+	JLT	printns2
+	JEQ	printns2
+	J	f5
+
+lcm
+	LDA	n3
+	LDT	n4
+	MULR	T, A
+	LDT	gcdn
+	DIVR	T, A
 	RSUB
 
 halt	J	halt
