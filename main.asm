@@ -19,6 +19,11 @@ main
 	STT	n1	.store the value to n1
 	STT	n3	.store the value to n1
 
+	LDA	n3
+	LDT	#0
+	COMPR	A, T
+	JEQ	halt
+
 	LDX	#0
 	LDT	#25	.the length of the string
 	JSUB	print2	.print enter the second number
@@ -75,8 +80,10 @@ f3
 f4
 	JSUB	printns2
 f5
+	JSUB	nl
+	JSUB	nl
 
-	J	halt
+	J	main
 
 
 nl			.print new line
