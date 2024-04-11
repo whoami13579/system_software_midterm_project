@@ -158,8 +158,7 @@ stn			.convert ns to int and store in n1
 	LDCH	ns, X
 	LDS	#1
 	ADDR	S, X
-	COMP	#10
-	JLT	stn
+	COMP	#32
 	JGT	stn
 	RSUB
 
