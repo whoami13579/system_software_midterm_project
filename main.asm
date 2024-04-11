@@ -2,7 +2,7 @@ test	START	0
 
 main
 	LDX	#0
-	LDT	#24	.the length of the string
+	LDT	#41	.the length of the string
 	JSUB	print1	.print enter the first number
 
 	LDX	#0
@@ -22,7 +22,7 @@ main
 	LDA	n3
 	LDT	#0
 	COMPR	A, T
-	JEQ	halt
+	JEQ	exit
 
 	LDX	#0
 	LDT	#25	.the length of the string
@@ -86,6 +86,12 @@ f5
 	J	main
 
 
+exit	
+	LDX	#0
+	LDT	#17
+	JSUB	print5
+	J	halt
+
 nl			.print new line
 	TD	stdout
 	JEQ	nl
@@ -129,6 +135,15 @@ print4			.print lcm is
 	WD	stdout
 	TIXR	T
 	JLT	print4
+	RSUB
+
+print5			.print lcm is
+	TD	stdout
+	JEQ	print5
+	LDCH	str5, X
+	WD	stdout
+	TIXR	T
+	JLT	print5
 	RSUB
 
 inputns			.read the first number and store in ns
@@ -264,10 +279,11 @@ lcm
 
 halt	J	halt
 
-str1	BYTE	C'input the first number: '
+str1	BYTE	C'input the first number(input 0 to exit): '
 str2	BYTE	C'input the second number: '
 str3	BYTE	C'gcd is '
 str4	BYTE	C'lcm is '
+str5	BYTE	C'exit successfully'
 s	RESB	50
 
 ns	RESB	10	.store the first number as string
